@@ -8,15 +8,29 @@ export const AuthProvider = ({ children }) => {
 
   const login = async (email, password) => {
     try {
-      const res = await axios.post("http://localhost:4000/api/admin/login", {
-        email,
-        password,
-      });
+      const res = await axios.post(
+        "http://localhost:5000/api/v1/admin-auth/login",
+        {
+          email,
+          password,
+        }
+      );
 
       const token = res.data.token;
 
       if (token) {
         localStorage.setItem("adminToken", token); // Store token for auth
+
+        // only for development , not use for production
+        localStorage.setItem(
+          "user",
+          JSON.stringify({
+            email,
+            name: "Admin",
+            role: "admin",
+          })
+        );
+
         setUser({
           email,
           name: "Admin",
@@ -32,13 +46,13 @@ export const AuthProvider = ({ children }) => {
     }
   };
 
-  const logout = () => {
-    localStorage.removeItem("adminToken");
-    setUser(null);
-  };
+  // const logout = () => {
+  //   localStorage.removeItem("adminToken");
+  //   setUser(null);
+  // };
 
   return (
-    <AuthContext.Provider value={{ user, login, logout }}>
+    <AuthContext.Provider value={{ user, login }}>
       {children}
     </AuthContext.Provider>
   );

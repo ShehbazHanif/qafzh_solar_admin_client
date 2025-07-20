@@ -4,11 +4,12 @@ import Login from "../pages/auth/Login";
 import Dashboard from "../pages/dashboard/Dashboard";
 import Products from "../pages/products/Products";
 import Orders from "../pages/orders/Orders";
-import Customers from "../pages/customers/Customers";
 import Analytics from "../pages/analytics/Analytics";
 import Settings from "../pages/settings/Settings";
 import ProtectedRoute from "../components/ProtectedRoute";
-import Categories from "../pages/category/Categories";
+import Shops from "../pages/shops/Shops";
+import Engineers from "../pages/Engineers/Engineers";
+import Ads from "../pages/ads/Ads";
 
 const AppRoutes = () => {
   return (
@@ -26,10 +27,10 @@ const AppRoutes = () => {
         }
       />
       <Route
-        path="/category"
+        path="/shop"
         element={
           <ProtectedRoute>
-            <Categories />
+            <Shops />
           </ProtectedRoute>
         }
       />
@@ -42,6 +43,14 @@ const AppRoutes = () => {
         }
       />
       <Route
+        path="/ads"
+        element={
+          <ProtectedRoute>
+            <Ads/>
+          </ProtectedRoute>
+        }
+      />
+      <Route
         path="/orders"
         element={
           <ProtectedRoute>
@@ -50,10 +59,10 @@ const AppRoutes = () => {
         }
       />
       <Route
-        path="/customers"
+        path="/engineers"
         element={
           <ProtectedRoute>
-            <Customers />
+            <Engineers />
           </ProtectedRoute>
         }
       />

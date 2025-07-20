@@ -1,27 +1,27 @@
-import React, { useState } from 'react';
-import { 
-  AppBar, 
-  Toolbar, 
-  IconButton, 
-  Typography, 
-  Badge, 
-  Box, 
+import React, { useState } from "react";
+import {
+  AppBar,
+  Toolbar,
+  IconButton,
+  Typography,
+  Badge,
+  Box,
   Avatar,
   Menu,
   MenuItem,
   ListItemIcon,
-  Divider
-} from '@mui/material';
-import { 
-  Menu as MenuIcon, 
-  Notifications as NotificationsIcon, 
+  Divider,
+} from "@mui/material";
+import {
+  Menu as MenuIcon,
+  Notifications as NotificationsIcon,
   Settings as SettingsIcon,
   Logout as LogoutIcon,
   AccountCircle as ProfileIcon,
-  Person as UserIcon
-} from '@mui/icons-material';
-import { useNavigate } from 'react-router-dom';
-import { useAuth } from '../../contexts/AuthContext';
+  Person as UserIcon,
+} from "@mui/icons-material";
+import { useNavigate } from "react-router-dom";
+import { useAuth } from "../../contexts/AuthContext";
 
 const Topbar = ({ toggleSidebar }) => {
   const navigate = useNavigate();
@@ -45,48 +45,47 @@ const Topbar = ({ toggleSidebar }) => {
   const handleLogout = () => {
     logout();
     handleMenuClose();
-    navigate('/login');
+    navigate("/login");
   };
 
   return (
-    <AppBar position="fixed" sx={{ zIndex: (theme) => theme.zIndex.drawer + 1 }}>
+    <AppBar
+      position="fixed"
+      sx={{ zIndex: (theme) => theme.zIndex.drawer + 1 }}>
       <Toolbar>
         <IconButton
           color="inherit"
           aria-label="open drawer"
           onClick={toggleSidebar}
           edge="start"
-          sx={{ mr: 2 }}
-        >
+          sx={{ mr: 2 }}>
           <MenuIcon />
         </IconButton>
         <Typography variant="h6" noWrap component="div" sx={{ flexGrow: 1 }}>
-          Cosmetic Store Admin
+          Qafzh Solar Store Admin
         </Typography>
-        <Box sx={{ display: 'flex', alignItems: 'center' }}>
+        <Box sx={{ display: "flex", alignItems: "center" }}>
           {/* Notifications Button */}
-          <IconButton 
+          <IconButton
             color="inherit"
-            onClick={() => handleNavigation('/notifications')}
-          >
+            onClick={() => handleNavigation("/notifications")}>
             <Badge badgeContent={4} color="secondary">
               <NotificationsIcon />
             </Badge>
           </IconButton>
 
           {/* Settings Button */}
-          <IconButton 
-            color="inherit" 
+          <IconButton
+            color="inherit"
             sx={{ ml: 1 }}
-            onClick={() => handleNavigation('/settings')}
-          >
+            onClick={() => handleNavigation("/settings")}>
             <SettingsIcon />
           </IconButton>
 
           {/* User Avatar with Menu */}
           <IconButton onClick={handleMenuOpen} sx={{ ml: 2 }}>
-            <Avatar 
-              alt="Admin User" 
+            <Avatar
+              alt="Admin User"
               src="/static/images/avatar/1.jpg"
               sx={{ width: 40, height: 40 }}
             />
@@ -101,39 +100,38 @@ const Topbar = ({ toggleSidebar }) => {
             PaperProps={{
               elevation: 0,
               sx: {
-                overflow: 'visible',
-                filter: 'drop-shadow(0px 2px 8px rgba(0,0,0,0.32))',
+                overflow: "visible",
+                filter: "drop-shadow(0px 2px 8px rgba(0,0,0,0.32))",
                 mt: 1.5,
-                '& .MuiAvatar-root': {
+                "& .MuiAvatar-root": {
                   width: 32,
                   height: 32,
                   ml: -0.5,
                   mr: 1,
                 },
-                '&:before': {
+                "&:before": {
                   content: '""',
-                  display: 'block',
-                  position: 'absolute',
+                  display: "block",
+                  position: "absolute",
                   top: 0,
                   right: 14,
                   width: 10,
                   height: 10,
-                  bgcolor: 'background.paper',
-                  transform: 'translateY(-50%) rotate(45deg)',
+                  bgcolor: "background.paper",
+                  transform: "translateY(-50%) rotate(45deg)",
                   zIndex: 0,
                 },
               },
             }}
-            transformOrigin={{ horizontal: 'right', vertical: 'top' }}
-            anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
-          >
-            <MenuItem onClick={() => handleNavigation('/profile')}>
+            transformOrigin={{ horizontal: "right", vertical: "top" }}
+            anchorOrigin={{ horizontal: "right", vertical: "bottom" }}>
+            <MenuItem onClick={() => handleNavigation("/profile")}>
               <ListItemIcon>
                 <ProfileIcon fontSize="small" />
               </ListItemIcon>
               My Profile
             </MenuItem>
-            <MenuItem onClick={() => handleNavigation('/account')}>
+            <MenuItem onClick={() => handleNavigation("/account")}>
               <ListItemIcon>
                 <UserIcon fontSize="small" />
               </ListItemIcon>
