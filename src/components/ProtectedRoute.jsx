@@ -5,7 +5,7 @@ import { useAuth } from "../contexts/AuthContext";
 const ProtectedRoute = ({ children }) => {
   let { user } = useAuth();
   const location = useLocation();
-  console.log(user);
+  // console.log(user);
   if (!user) {
     // Redirect to login, but save the location they tried to access
     // get from localstorage
