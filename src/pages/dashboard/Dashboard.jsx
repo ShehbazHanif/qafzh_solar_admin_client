@@ -1,4 +1,5 @@
 import React from 'react';
+import { useState,useEffect } from 'react';
 import { 
   Grid, 
   Paper, 
@@ -13,7 +14,9 @@ import {
   Divider,
   Chip,
   useTheme
-} from '@mui/material';
+} 
+from '@mui/material';
+import axios from 'axios';
 import { 
   ShoppingCart as ProductsIcon,
   People as CustomersIcon,
@@ -27,7 +30,12 @@ import {
   Warning as WarningIcon,
   SentimentSatisfied as PositiveIcon,
   SentimentNeutral as NeutralIcon,
-  SentimentDissatisfied as NegativeIcon
+  SentimentDissatisfied as NegativeIcon,
+  Storefront as ShopIcon,
+  Build as EngineerIcon,
+  Campaign as AdsIcon,
+  Group as UsersIcon,
+  CheckCircle as ActiveIcon,
 } from '@mui/icons-material';
 import { styled } from '@mui/material/styles';
 import Layout from '../../components/layout/Layout';
@@ -179,9 +187,37 @@ const RecentOrderItem = ({ id, customer, date, amount, status }) => {
 
 const Dashboard = () => {
   const theme = useTheme();
+   const [stats, setStats] = useState({
+    totalProducts: 0,
+    totalShops: 0,
+    totalEngineers: 0,
+    activeEngineers: 0,
+    totalAds: 0,
+    totalUsers: 0,
+  });
+  console.log("stats",stats)
+
+  useEffect(() => {
+    const fetchStats = async () => {
+      const  token  = localStorage.getItem("adminToken");
+      try {
+        const res = await axios.get("http://localhost:5000/api/v1/admin-stats/dashboard-stats",
+          {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+        );
+        setStats(res.data.stats);
+      } catch (err) {
+        console.error("Failed to fetch stats", err);
+      }
+    };
+    fetchStats();
+  }, []);
 
   // Mock data
-  const stats = [
+  const statsCard = [
     { 
       icon: <RevenueIcon />, 
       title: 'MONTHLY REVENUE', 
@@ -200,8 +236,8 @@ const Dashboard = () => {
     },
     { 
       icon: <CustomersIcon />, 
-      title: 'ACTIVE CUSTOMERS', 
-      value: '2,412', 
+      title: 'ACTIVE Engineers', 
+      value: stats.activeEngineers, 
       color: '#2196F3',
       progress: 72,
       trend: '+5.7%'
@@ -209,11 +245,28 @@ const Dashboard = () => {
     { 
       icon: <ProductsIcon />, 
       title: 'TOTAL PRODUCTS', 
-      value: '487', 
+      value: stats.totalProducts, 
       color: '#4CAF50',
       progress: 88,
       trend: '+15.3%'
-    }
+    },
+    { 
+      icon: <AdsIcon />, 
+      title: 'Total Ads', 
+      value: stats.totalAds, 
+      color: '#4CAF50',
+      progress: 88,
+      trend: '+15.3%'
+    },
+     { 
+      icon: <ShopIcon />, 
+      title: 'Total Shops', 
+      value: stats.totalShops, 
+      color: '#4CAF50',
+      progress: 88,
+      trend: '+15.3%'
+    },
+
   ];
 
   const recentOrders = [
@@ -257,7 +310,7 @@ const Dashboard = () => {
       
       {/* Stats Cards */}
       <Grid container spacing={3} sx={{ mb: 4 }}>
-        {stats.map((stat, index) => (
+        {statsCard.map((stat, index) => (
           <Grid item xs={12} sm={6} lg={3} key={index}>
             <StatCard {...stat} />
           </Grid>
