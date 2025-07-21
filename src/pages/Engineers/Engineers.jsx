@@ -7,7 +7,6 @@ import {
   TextField,
   IconButton,
   Avatar,
-  CircularProgress,
   Snackbar,
   Alert,
 } from "@mui/material";
@@ -25,6 +24,7 @@ import axios from "axios";
 const Engineers = () => {
   const [searchKeyword, setSearchKeyword] = useState("");
   const [engineers, setEngineers] = useState([]);
+  const [governorate, setGovernorate] = useState([]);
   const [loading, setLoading] = useState(false);
   const [openForm, setOpenForm] = useState(false);
   const [selectedEngineer, setSelectedEngineer] = useState(null);
@@ -35,6 +35,17 @@ const Engineers = () => {
   });
 
   const token = localStorage.getItem("adminToken");
+
+  const fetchGovernorate = async () => {
+    try {
+      const res = await axios.get(
+        "http://localhost:5000/api/v1/user/get/governorate-data"
+      );
+      setGovernorate(res.data.data || res.data); // adjust depending on backend format
+    } catch (err) {
+      console.error("Error fetching governorate:", err);
+    }
+  };
 
   const fetchEngineers = async () => {
     try {
@@ -50,6 +61,11 @@ const Engineers = () => {
     }
   };
 
+  useEffect(() => {
+    fetchGovernorate();
+    fetchEngineers();
+  }, []);
+
   const showSnackbar = (message, severity = "success") => {
     setSnackbar({ open: true, message, severity });
   };
@@ -58,9 +74,6 @@ const Engineers = () => {
     setSnackbar({ ...snackbar, open: false });
   };
 
-  useEffect(() => {
-    fetchEngineers();
-  }, []);
   const toggleStatus = async (id) => {
     try {
       await axios.patch(
@@ -72,11 +85,12 @@ const Engineers = () => {
           },
         }
       );
-      fetchEngineers; // refresh
+      fetchEngineers();
     } catch (error) {
       console.error("Error toggling status:", error);
     }
   };
+
   const handleAddOrEditEngineer = async (formData) => {
     try {
       if (selectedEngineer) {
@@ -126,14 +140,24 @@ const Engineers = () => {
   };
 
   const filter = async () => {
-    if (!searchKeyword.trim()) {
-      fetchEngineers();
-    } else {
-      const keyword = searchKeyword.toLowerCase();
-      const filtered = engineers.filter((eng) =>
-        eng.name.toLowerCase().includes(keyword)
+    const keyword = searchKeyword.trim();
+
+    if (!keyword) return; // Exit early if empty
+
+    try {
+      const res = await axios.get(
+        `http://localhost:5000/api/v1/user/filters-engineer?search_keyword=${encodeURIComponent(
+          keyword
+        )}`,
+        {
+          // headers: { Authorization: `Bearer ${token}` },
+        }
       );
-      setEngineers(filtered);
+
+      setEngineers(res.data.data); // Assuming `res.data.data` holds the array
+    } catch (error) {
+      console.error("Failed to fetch engineers:", error);
+      // Optionally show a toast or error message here
     }
   };
 
@@ -249,6 +273,7 @@ const Engineers = () => {
         onClose={() => setOpenForm(false)}
         onSubmit={handleAddOrEditEngineer}
         initialData={selectedEngineer}
+        governorateData={governorate}
       />
 
       <Snackbar

@@ -16,7 +16,7 @@ import { useState, useEffect } from "react";
 
 const serviceOptions = ["Install", "Repair"];
 
-const EngineerForm = ({ open, onClose, onSubmit, initialData }) => {
+const EngineerForm = ({ open, onClose, onSubmit, initialData, governorateData }) => {
   const [form, setForm] = useState({
     name: "",
     phone: "",
@@ -24,6 +24,8 @@ const EngineerForm = ({ open, onClose, onSubmit, initialData }) => {
     governorate: "",
     services: [],
   });
+
+  const [cities, setCities] = useState([]);
 
   useEffect(() => {
     if (initialData) {
@@ -44,6 +46,14 @@ const EngineerForm = ({ open, onClose, onSubmit, initialData }) => {
       });
     }
   }, [initialData]);
+
+  useEffect(() => {
+    const selectedGov = governorateData.find(g => g.name === form.governorate);
+    setCities(selectedGov ? selectedGov.cities : []);
+    if (!selectedGov) {
+      setForm(prev => ({ ...prev, city: "" }));
+    }
+  }, [form.governorate, governorateData]);
 
   const handleChange = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value });
@@ -115,23 +125,35 @@ const EngineerForm = ({ open, onClose, onSubmit, initialData }) => {
           </Select>
         </FormControl>
 
-        <TextField
-          name="governorate"
-          label="Governorate"
-          fullWidth
-          value={form.governorate}
-          onChange={handleChange}
-          sx={{ mb: 2 }}
-        />
+        <FormControl fullWidth sx={{ mb: 2 }}>
+          <InputLabel>Governorate</InputLabel>
+          <Select
+            name="governorate"
+            value={form.governorate}
+            onChange={handleChange}
+            input={<OutlinedInput label="Governorate" />}>
+            {governorateData.map((gov) => (
+              <MenuItem key={gov.name} value={gov.name}>
+                {gov.name}
+              </MenuItem>
+            ))}
+          </Select>
+        </FormControl>
 
-        <TextField
-          name="city"
-          label="City"
-          fullWidth
-          value={form.city}
-          onChange={handleChange}
-          sx={{ mb: 2 }}
-        />
+        <FormControl fullWidth sx={{ mb: 2 }}>
+          <InputLabel>City</InputLabel>
+          <Select
+            name="city"
+            value={form.city}
+            onChange={handleChange}
+            input={<OutlinedInput label="City" />}>
+            {cities.map((city) => (
+              <MenuItem key={city} value={city}>
+                {city}
+              </MenuItem>
+            ))}
+          </Select>
+        </FormControl>
 
         <Button fullWidth variant="contained" onClick={handleSubmit}>
           {initialData ? "Update" : "Submit"}
