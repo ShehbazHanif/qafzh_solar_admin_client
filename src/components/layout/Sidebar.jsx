@@ -15,11 +15,12 @@ import {
   Receipt as OrdersIcon,
   BarChart as AnalyticsIcon,
   Settings as SettingsIcon,
-  Category as CategoryIcon,
   Build as EngineerIcon,
   Storefront as ShopIcon,
   Campaign as AdsIcon,
 } from "@mui/icons-material";
+import CalculateIcon from "@mui/icons-material/Calculate";
+
 
 import { useNavigate } from "react-router-dom";
 
@@ -32,6 +33,7 @@ const menuItems = [
   { text: "Engineer", icon: <EngineerIcon />, path: "/engineers" },
   { text: "Ads", icon: <AdsIcon />, path: "/ads" },
   { text: "Orders", icon: <OrdersIcon />, path: "/orders" },
+   { text: "Calculator Settings", icon: <CalculateIcon />, path: "/calculator-setting" },
   { text: "Analytics", icon: <AnalyticsIcon />, path: "/analytics" },
   { text: "Settings", icon: <SettingsIcon />, path: "/settings" },
 ];

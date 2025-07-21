@@ -10,6 +10,7 @@ import ProtectedRoute from "../components/ProtectedRoute";
 import Shops from "../pages/shops/Shops";
 import Engineers from "../pages/Engineers/Engineers";
 import Ads from "../pages/ads/Ads";
+import CalculatorSettings from "../pages/calculatorSettings/CalculatorSettings";
 
 const AppRoutes = () => {
   return (
@@ -63,6 +64,14 @@ const AppRoutes = () => {
         element={
           <ProtectedRoute>
             <Engineers />
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="/calculator-setting"
+        element={
+          <ProtectedRoute>
+            <CalculatorSettings/>
           </ProtectedRoute>
         }
       />
